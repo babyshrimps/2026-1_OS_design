@@ -7,6 +7,7 @@ E-mail: 22411835@yu.ac.kr
 
 ## Revision history  
 03.27.2026 / version : 1.0 / First Version
+05.08.2026 / version : 1.1 / Use case list 수정
 
   ---
   
