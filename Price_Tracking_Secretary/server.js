@@ -303,12 +303,12 @@ async function runPriceTracking(targetUserId) {
 
             savePriceHistory(data, product.productId, newPrice);
 
-            if (selectedProduct.status !== "품절" && selectedProduct.status !== "수집 실패") {
+            if (product.status !== "품절" && product.status !== "수집 실패") {
 
-                if (selectedProduct.curPrice <= selectedProduct.targetPrice) {
-                    selectedProduct.status = "목표가 도달";
+                if (product.curPrice <= product.targetPrice) {
+                    product.status = "목표가 도달";
                 } else {
-                    selectedProduct.status = "추적 중";
+                    product.status = "추적 중";
                 }
             }
         }
