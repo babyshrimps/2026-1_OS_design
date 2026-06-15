@@ -12,8 +12,8 @@ const port = process.env.PORT || 3000;
 // Render에서는 환경변수로 MongoDB 주소를 넣어준다
 const MONGO_URI = process.env.MONGO_URI;
 
-// 테스트를 위해 30초마다 자동으로 가격을 갱신한다
-const checkInterval = 30000;
+// 테스트를 위해 1분마다 자동으로 가격을 갱신한다
+const checkInterval = 100000;
 
 app.use(express.json());
 app.use(express.static(__dirname));
@@ -83,38 +83,35 @@ function twoNumber(number) {
 
 
 // 현재 시간을 문자열로 만든다
-function getNowText() {
+function makeKoreaTimeText(date) {
+    let koreaDate = new Date(
+        date.toLocaleString("en-US", { timeZone: "Asia/Seoul" })
+    );
 
-    let now = new Date();
+    let year = koreaDate.getFullYear();
+    let month = koreaDate.getMonth() + 1;
+    let day = koreaDate.getDate();
+    let hour = koreaDate.getHours();
+    let minute = koreaDate.getMinutes();
 
-    let year = now.getFullYear();
-    let month = now.getMonth() + 1;
-    let date = now.getDate();
-    let hour = now.getHours();
-    let minute = now.getMinutes();
-
-    return year + "-" + twoNumber(month) + "-" + twoNumber(date)
+    return year + "-" + twoNumber(month) + "-" + twoNumber(day)
         + " " + twoNumber(hour) + ":" + twoNumber(minute);
 }
 
 
-// 다음 가격 확인 예정 시간을 만든다
-function getNextCheckText() {
+// 현재 한국 시간 구하기
+function getNowText() {
+    return makeKoreaTimeText(new Date());
+}
 
+
+// 다음 가격 확인 예정 시간 구하기
+function getNextCheckText() {
     let next = new Date();
 
-    // 시연을 위해 1분 뒤로 설정하였다
-    // 실제 기준으로 바꾸려면 next.setHours(next.getHours() + 12); 를 사용하면 된다
     next.setMinutes(next.getMinutes() + 1);
 
-    let year = next.getFullYear();
-    let month = next.getMonth() + 1;
-    let date = next.getDate();
-    let hour = next.getHours();
-    let minute = next.getMinutes();
-
-    return year + "-" + twoNumber(month) + "-" + twoNumber(date)
-        + " " + twoNumber(hour) + ":" + twoNumber(minute);
+    return makeKoreaTimeText(next);
 }
 
 
@@ -254,7 +251,7 @@ async function runPriceTracking(targetUserId) {
 
                 product.status = "목표가 도달";
 
-                if (product.lastNoticePrice !== newPrice) {
+                if (product.lastNoticePrice === null) {
 
                     createNotice(data, product);
 
@@ -264,9 +261,10 @@ async function runPriceTracking(targetUserId) {
             } else {
 
                 product.status = "추적 중";
+                product.lastNoticePrice = null;
             }
 
-            addSystemLog(data, product.productName + " 자동 가격 수집");
+        
         }
     }
 
