@@ -27,13 +27,13 @@ let admins = [
 ];
 
 
-// 현재 로그인한 사람 저장
+// 현재 로그인한 사람 정보
 
 let currentUser = null;
 let currentRole = "";
 
 
-// 데이터 저장 배열
+// 서버에서 받아오는 데이터
 
 let systemLogs = [];
 let products = [];
@@ -42,8 +42,10 @@ let notifications = [];
 let errorLogs = [];
 let noticeSettings = {};
 
+let currentDetailProductId = null;
 
-// 페이지가 열리면 서버 데이터 먼저 불러오기
+
+// 페이지가 열리면 서버 데이터부터 불러온다
 
 window.onload = async function () {
 
@@ -152,6 +154,7 @@ async function logout() {
 
     currentUser = null;
     currentRole = "";
+    currentDetailProductId = null;
 
 
     document.getElementById("login-id").value = "";
@@ -226,6 +229,11 @@ function showUserMenu(menuId) {
 
 
     document.getElementById(menuId).classList.remove("hidden");
+
+
+    if (menuId !== "product-detail-page") {
+        currentDetailProductId = null;
+    }
 
 
     if (menuId === "main-page") {
@@ -522,6 +530,10 @@ async function changeTargetPrice(productId) {
 
     showProductList();
 
+    if (currentDetailProductId === productId) {
+        showProductDetail(productId);
+    }
+
     alert("목표 가격이 변경되었습니다.");
 }
 
@@ -611,6 +623,8 @@ function showProductDetail(productId) {
         return;
     }
 
+
+    currentDetailProductId = productId;
 
     showUserMenu("product-detail-page");
 
@@ -718,9 +732,6 @@ function showPriceHistory(productId, targetPrice) {
         historyList.appendChild(row);
     }
 }
-
-
-
 // 가격 이력 그래프 그리기
 
 function drawPriceChart(productId, targetPrice) {
@@ -1583,13 +1594,11 @@ function startClientRefresh() {
             }
 
 
-            if (!document.getElementById("product-detail-page").classList.contains("hidden")) {
-                let productName = document.getElementById("detail-product-name").innerText;
+            if (currentDetailProductId !== null) {
+                let detailPage = document.getElementById("product-detail-page");
 
-                for (let i = 0; i < products.length; i++) {
-                    if (products[i].productName === productName && products[i].PuserId === currentUser.userId) {
-                        showProductDetail(products[i].productId);
-                    }
+                if (!detailPage.classList.contains("hidden")) {
+                    showProductDetail(currentDetailProductId);
                 }
             }
         }
