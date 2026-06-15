@@ -686,6 +686,11 @@ function showPriceHistory(productId, targetPrice) {
         return;
     }
 
+    if (history.length > 15) {
+        history = history.slice(history.length - 15);
+        message.innerText = "최근 가격 이력 15개만 표시합니다.";
+    }
+
 
     for (let i = history.length - 1; i >= 0; i--) {
 
@@ -769,6 +774,10 @@ function drawPriceChart(productId, targetPrice) {
         message.innerText = "그래프로 표시할 가격 이력이 없습니다.";
 
         return;
+    }
+
+    if (history.length > 15) {
+        history = history.slice(history.length - 15);
     }
 
 

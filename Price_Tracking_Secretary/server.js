@@ -10,8 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Render에서는 환경변수로 MongoDB 주소를 넣어준다
-const MONGO_URI = process.env.MONGO_URI;
-
+const MONGO_URI = "mongodb+srv://jekim714:jekim714@cluster0.izipoyw.mongodb.net/PriceTrackerDB?appName=Cluster0";
 // 테스트를 위해 1분마다 자동으로 가격을 갱신한다
 const checkInterval = 60 * 1000;
 
@@ -409,44 +408,45 @@ app.post("/api/track-now", async function (req, res) {
 
 
 // 서버가 켜져 있는 동안 자동으로 가격을 갱신한다
+// 서버가 켜져 있는 동안 자동으로 가격을 갱신한다
 setInterval(async function () {
+    if (mongoose.connection.readyState !== 1) {
+        return;
+    }
 
     try {
-
         await runPriceTracking(null);
-
     } catch (error) {
-
         console.log("자동 가격 수집 실패:", error.message);
     }
 
 }, checkInterval);
 
 
-// MongoDB 연결 후 서버 실행
-async function startServer() {
+// Render가 포트를 인식할 수 있도록 서버는 먼저 실행한다
+app.listen(port, function () {
+    console.log("Price Tracking Secretary server start");
+    console.log("http://localhost:" + port);
+});
 
+
+// MongoDB 연결
+async function connectDB() {
     if (!MONGO_URI) {
-
         console.log("MongoDB 연결 주소가 설정되지 않았습니다.");
         return;
     }
 
     try {
-
-        await mongoose.connect(MONGO_URI);
+        await mongoose.connect(MONGO_URI, {
+            serverSelectionTimeoutMS: 30000
+        });
 
         console.log("MongoDB Atlas 연결 성공");
 
-        app.listen(port, function () {
-            console.log("Price Tracking Secretary server start");
-            console.log("http://localhost:" + port);
-        });
-
     } catch (error) {
-
         console.log("MongoDB 연결 실패:", error.message);
     }
 }
 
-startServer();
+connectDB();
