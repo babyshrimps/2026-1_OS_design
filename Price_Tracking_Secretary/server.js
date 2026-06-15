@@ -122,9 +122,28 @@ function randomNumber(min, max) {
 }
 
 
-// 모의 가격 데이터를 만든다
-function mockPriceData(currentPrice) {
+// 모의 가격 수집 결과를 만든다
+function mockCollectPrice(currentPrice) {
 
+    let resultNumber = randomNumber(1, 100);
+
+    // 1~5: 수집 실패
+    if (resultNumber <= 5) {
+        return {
+            result: "fail",
+            price: currentPrice
+        };
+    }
+
+    // 6~10: 품절
+    if (resultNumber <= 10) {
+        return {
+            result: "soldout",
+            price: currentPrice
+        };
+    }
+
+    // 나머지: 정상 가격 수집
     let changePrice = randomNumber(-20000, 10000);
     let newPrice = currentPrice + changePrice;
 
@@ -132,7 +151,10 @@ function mockPriceData(currentPrice) {
         newPrice = 1000;
     }
 
-    return newPrice;
+    return {
+        result: "success",
+        price: newPrice
+    };
 }
 
 
@@ -226,6 +248,7 @@ function createNotice(data, product) {
 
 
 // 가격 추적 기능
+// 가격 추적 기능
 async function runPriceTracking(targetUserId) {
 
     let data = await loadData();
@@ -239,32 +262,56 @@ async function runPriceTracking(targetUserId) {
 
             count++;
 
-            let newPrice = mockPriceData(product.curPrice);
+            let collectResult = mockCollectPrice(product.curPrice);
 
-            product.curPrice = newPrice;
             product.lastCheck = getNowText();
             product.nextCheck = getNextCheckText();
 
-            savePriceHistory(data, product.productId, newPrice);
+            // 가격 수집 실패
+            if (collectResult.result === "fail") {
 
-            if (newPrice <= product.targetPrice) {
+                product.status = "수집 실패";
 
-                product.status = "목표가 도달";
+                addErrorLog(
+                    data,
+                    product.productId,
+                    "가격 수집 실패",
+                    product.productName + " 상품의 가격 정보를 수집하지 못했습니다."
+                );
 
-                if (product.lastNoticePrice === null) {
-
-                    createNotice(data, product);
-
-                    product.lastNoticePrice = newPrice;
-                }
-
-            } else {
-
-                product.status = "추적 중";
-                product.lastNoticePrice = null;
+                continue;
             }
 
-        
+            // 품절 상태
+            if (collectResult.result === "soldout") {
+
+                product.status = "품절";
+
+                addErrorLog(
+                    data,
+                    product.productId,
+                    "품절",
+                    product.productName + " 상품이 품절 상태로 확인되었습니다."
+                );
+
+                continue;
+            }
+
+            // 정상 수집
+            let newPrice = collectResult.price;
+
+            product.curPrice = newPrice;
+
+            savePriceHistory(data, product.productId, newPrice);
+
+            if (selectedProduct.status !== "품절" && selectedProduct.status !== "수집 실패") {
+
+                if (selectedProduct.curPrice <= selectedProduct.targetPrice) {
+                    selectedProduct.status = "목표가 도달";
+                } else {
+                    selectedProduct.status = "추적 중";
+                }
+            }
         }
     }
 
@@ -272,6 +319,8 @@ async function runPriceTracking(targetUserId) {
 
     return count;
 }
+
+
 // 전체 데이터 조회
 app.get("/api/data", async function (req, res) {
 
