@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
 
 // 테스트를 위해 1분마다 자동으로 가격을 갱신한다
-const checkInterval = 100000;
+const checkInterval = 60 * 1000;
 
 app.use(express.json());
 app.use(express.static(__dirname));

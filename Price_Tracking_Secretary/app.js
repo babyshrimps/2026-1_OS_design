@@ -971,7 +971,7 @@ function getNextCheckText() {
 
     let next = new Date();
 
-    next.setHours(next.getHours() + 12);
+    next.setHours(next.getMinutes() + 1);
 
 
     let year = next.getFullYear();
