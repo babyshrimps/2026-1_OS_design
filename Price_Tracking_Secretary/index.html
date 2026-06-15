@@ -1,0 +1,491 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Price Tracking Secretary</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="app.js" defer></script>
+</head>
+
+
+<body>
+
+    <div id="container">
+
+
+        <!-- 로그인 화면 -->
+        <section id="login-page" class="page">
+
+            <h1>Price Tracking Secretary</h1>
+
+            <p>
+                상품 가격 추적 및 목표 가격 알림 서비스
+            </p>
+
+
+            <div class="login-box">
+
+                <h2>Login</h2>
+
+
+                <p>아이디</p>
+
+                <input type="text"
+                       id="login-id"
+                       placeholder="아이디를 입력하세요">
+
+
+                <p>비밀번호</p>
+
+                <input type="password"
+                       id="login-password"
+                       placeholder="비밀번호를 입력하세요">
+
+
+                <button onclick="login()">
+                    로그인
+                </button>
+
+
+                <p id="login-message" class="message"></p>
+
+
+                <div class="account-info">
+
+                    <p>사용자 계정 : demo / 1234</p>
+
+                    <p>사용자 계정 : kje / 1234</p>
+
+                    <p>관리자 계정 : yu / 0000</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- 사용자 로그인 성공 후 화면 -->
+        <section id="user-page" class="page hidden">
+
+            <header id="user-header">
+
+                <h1>Price Tracking Secretary</h1>
+
+                <p id="user-name-text">
+                    사용자님 환영합니다.
+                </p>
+
+
+                <nav>
+
+                    <button onclick="showUserMenu('main-page')">
+                        메인
+                    </button>
+
+                    <button onclick="showUserMenu('register-page')">
+                        상품 등록
+                    </button>
+
+                    <button onclick="showUserMenu('product-list-page')">
+                        관심 상품 목록
+                    </button>
+
+                    <button onclick="showUserMenu('notification-page')">
+                        알림 내역
+                    </button>
+
+                    <button onclick="runPriceTracking()">
+                        가격 추적 실행
+                    </button>
+
+                    <button onclick="logout()">
+                        로그아웃
+                    </button>
+
+                </nav>
+
+            </header>
+
+
+
+            <!-- 사용자 메인 화면 -->
+            <main id="main-page" class="user-menu">
+
+                <h2>사용자 메인 화면</h2>
+
+                <p>
+                    현재 등록한 상품과 알림 상태를 간단하게 확인할 수 있다.
+                </p>
+
+
+                <div class="summary-area">
+
+                    <div class="summary-box">
+
+                        <h3>등록 상품 수</h3>
+
+                        <p id="product-count">0</p>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <h3>목표가 도달 상품 수</h3>
+
+                        <p id="target-count">0</p>
+
+                    </div>
+
+
+                    <div class="summary-box">
+
+                        <h3>읽지 않은 알림</h3>
+
+                        <p id="unread-count">0</p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="guide-box">
+
+                    <h3>사용 안내</h3>
+
+                    <p>
+                        상품 등록 화면에서 상품명, 상품 링크, 목표 가격을 입력하면 가격 추적 대상 상품으로 저장된다.
+                    </p>
+
+                    <p>
+                        가격 추적 실행 버튼을 누르면 모의 가격 데이터가 생성되고, 목표 가격 이하가 되면 알림이 생성된다.
+                    </p>
+
+                </div>
+
+            </main>
+
+
+
+            <!-- 상품 등록 화면 -->
+            <main id="register-page" class="user-menu hidden">
+
+                <h2>상품 등록</h2>
+
+                <p>
+                    가격 추적을 원하는 상품 정보를 입력한다.
+                </p>
+
+
+                <div class="register-box">
+
+                    <p>상품명</p>
+
+                    <input type="text"
+                           id="product-name"
+                           placeholder="예: 무선 이어폰">
+
+
+                    <p>상품 링크</p>
+
+                    <input type="text"
+                           id="product-link"
+                           placeholder="예: https://example.com/item">
+
+
+                    <p>목표 가격</p>
+
+                    <input type="number"
+                           id="target-price"
+                           placeholder="예: 50000">
+
+
+                    <button onclick="addProduct()">
+                        상품 등록
+                    </button>
+
+
+                    <p id="register-message" class="message"></p>
+
+                </div>
+
+            </main>
+
+
+            <!-- 관심 상품 목록 화면 -->
+
+            <main id="product-list-page" class="user-menu hidden">
+
+                <h2>관심 상품 목록</h2>
+
+                <p>
+                    등록한 상품 목록을 확인하는 화면이다.
+                </p>
+
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>상품명</th>
+                            <th>상품 링크</th>
+                            <th>현재 가격</th>
+                            <th>목표 가격</th>
+                            <th>상태</th>
+                            <th>작업</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="product-list">
+                    </tbody>
+
+                </table>
+
+
+                <p id="product-list-message" class="message"></p>
+
+            </main>
+
+            <!-- 상품 상세 조회 화면 -->
+            <main id="product-detail-page" class="user-menu hidden">
+
+                <h2>상품 상세 조회</h2>
+
+                <p>
+                    선택한 상품의 가격 정보와 가격 이력을 확인하는 화면이다.
+                </p>
+
+
+                <div class="detail-box">
+
+                    <p><b>상품명 :</b> <span id="detail-product-name"></span></p>
+
+                    <p><b>상품 링크 :</b> <a id="detail-product-link" href="#" target="_blank">상품 페이지 이동</a></p>
+
+                    <p><b>현재 가격 :</b> <span id="detail-current-price"></span></p>
+
+                    <p><b>목표 가격 :</b> <span id="detail-target-price"></span></p>
+
+                    <p><b>상태 :</b> <span id="detail-status"></span></p>
+
+                    <p><b>등록 시간 :</b> <span id="detail-addtime"></span></p>
+
+                    <p><b>마지막 확인 :</b> <span id="detail-last-check"></span></p>
+
+                    <p><b>다음 확인 예정 :</b> <span id="detail-next-check"></span></p>
+
+                </div>
+
+                <div class="chart-box">
+
+                    <h3>가격 이력 그래프</h3>
+
+                    <canvas id="price-chart"></canvas>
+
+                    <p id="price-chart-message" class="message"></p>
+
+                </div>
+
+                <h3>가격 이력</h3>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>수집 시간</th>
+                            <th>가격</th>
+                            <th>이전 가격 대비</th>
+                            <th>목표가 비교</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="price-history-list">
+                    </tbody>
+
+                </table>
+
+
+                <p id="price-history-message" class="message"></p>
+
+
+                <button onclick="showUserMenu('product-list-page')">
+                    목록으로 돌아가기
+                </button>
+
+            </main>
+
+            <!-- 알림 내역 화면 -->
+            <!-- 알림 내역 화면 -->
+            <main id="notification-page" class="user-menu hidden">
+
+                <h2>알림 내역</h2>
+
+                <p>
+                    목표 가격에 도달한 상품 알림을 확인하고 읽음 상태를 관리하는 화면이다.
+                </p>
+
+
+                <div class="notice-setting-box">
+
+                    <h3>알림 수신 설정</h3>
+
+                    <p>
+                        알림을 받을 방식을 선택한다.
+                    </p>
+
+
+                    <label>
+                        <input type="radio" name="notice-type" value="web" checked>
+                        웹 알림
+                    </label>
+
+                    <label>
+                        <input type="radio" name="notice-type" value="email">
+                        이메일 알림
+                    </label>
+
+
+                    <p>이메일 주소</p>
+
+                    <input type="email"
+                           id="notice-email"
+                           placeholder="예: demo@test.com">
+
+
+                    <button onclick="saveNoticeSetting()">
+                        알림 설정 저장
+                    </button>
+
+
+                    <p id="notice-setting-message" class="message"></p>
+
+                </div>
+
+
+                <div class="notice-top-menu">
+
+                    <button onclick="markAllNoticesRead()">
+                        모두 읽음 처리
+                    </button>
+
+                </div>
+
+
+                <div id="notification-list">
+
+                </div>
+
+
+                <p id="notification-message" class="message"></p>
+
+            </main>
+
+        </section>
+
+        <!-- 관리자 로그인 성공 후 화면 -->
+        <section id="admin-page" class="page hidden">
+
+            <h1>관리자 로그 화면</h1>
+
+            <p>
+                관리자는 알림 발송 기록, 예외 상황 기록, 시스템 로그를 한 화면에서 확인할 수 있다.
+            </p>
+
+
+            <div class="admin-menu">
+
+                <button onclick="showAdminPageLogs()">
+                    로그 새로고침
+                </button>
+
+                <button onclick="logout()">
+                    로그아웃
+                </button>
+
+            </div>
+
+
+            <div class="admin-section">
+
+                <h2>알림 발송 기록</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>내용</th>
+                            <th>시간</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="admin-notice-log-list">
+                    </tbody>
+                </table>
+
+                <p id="admin-notice-log-message" class="admin-empty-message"></p>
+
+            </div>
+
+
+            <div class="admin-section">
+
+                <h2>예외 상황 기록</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>오류 종류</th>
+                            <th>내용</th>
+                            <th>시간</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="admin-error-log-list">
+                    </tbody>
+                </table>
+
+                <p id="admin-error-log-message" class="admin-empty-message"></p>
+
+            </div>
+
+
+            <div class="admin-section">
+
+                <h2>시스템 로그</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>내용</th>
+                            <th>시간</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="admin-system-log-list">
+                    </tbody>
+                </table>
+
+                <p id="admin-system-log-message" class="admin-empty-message"></p>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</body>
+
+</html>

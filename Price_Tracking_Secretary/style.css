@@ -1,0 +1,559 @@
+﻿body {
+    margin: 0;
+    background-color: #fff7d6;
+    font-family: Arial, sans-serif;
+    color: #222;
+}
+
+#container {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.page {
+    padding: 30px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* 로그인 화면 */
+
+#login-page {
+    text-align: center;
+    padding-top: 55px;
+}
+
+    #login-page h1 {
+        color: #7a5600;
+        margin-bottom: 5px;
+    }
+
+    #login-page > p {
+        margin-top: 5px;
+        margin-bottom: 25px;
+    }
+
+
+/* 로그인 박스 */
+
+.login-box {
+    width: 390px;
+    margin: 0 auto;
+    padding: 25px;
+    background-color: white;
+    border: 2px solid #d8b84f;
+    border-radius: 6px;
+}
+
+    .login-box h2 {
+        margin-top: 0;
+        margin-bottom: 25px;
+    }
+
+    .login-box p {
+        text-align: left;
+        margin-left: 10px;
+        margin-bottom: 7px;
+        font-weight: bold;
+    }
+
+    .login-box input {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 18px;
+        border: 1px solid #999;
+        border-radius: 4px;
+    }
+
+        .login-box input:focus {
+            outline: none;
+            border: 2px solid #d6a600;
+        }
+
+
+/* 버튼 */
+
+button {
+    background-color: #f0c338;
+    color: #222;
+    border: 1px solid #9b7500;
+    border-radius: 4px;
+    padding: 9px 17px;
+    margin: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+    button:hover {
+        background-color: #d9a900;
+    }
+
+
+/* 메시지 */
+
+.message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 15px;
+}
+
+
+/* 계정 안내 */
+
+.account-info {
+    background-color: #fff0b3;
+    border: 1px solid #e0c56a;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+    .account-info p {
+        text-align: center;
+        margin: 6px;
+        font-weight: normal;
+    }
+
+
+/* 사용자 화면 상단 */
+
+#user-header {
+    background-color: white;
+    border: 2px solid #d8b84f;
+    border-radius: 6px;
+    padding: 18px;
+    margin-bottom: 20px;
+}
+
+    #user-header h1 {
+        color: #7a5600;
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+
+    #user-header p {
+        margin-top: 0;
+        color: #444;
+    }
+
+    #user-header nav {
+        margin-top: 12px;
+    }
+
+
+/* 사용자 메뉴 화면 */
+
+.user-menu {
+    background-color: white;
+    border: 2px solid #d8b84f;
+    border-radius: 6px;
+    padding: 22px;
+    margin-top: 15px;
+}
+
+    .user-menu h2 {
+        color: #7a5600;
+        margin-top: 0;
+    }
+
+
+/* 메인 화면 숫자 박스 */
+
+.summary-area {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.summary-box {
+    width: 30%;
+    background-color: #fff0b3;
+    border: 1px solid #d8b84f;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
+}
+
+    .summary-box h3 {
+        margin-top: 0;
+        font-size: 16px;
+    }
+
+    .summary-box p {
+        font-size: 27px;
+        font-weight: bold;
+        color: #7a5600;
+    }
+
+
+/* 안내 박스 */
+
+.guide-box {
+    background-color: #fff9df;
+    border: 1px solid #d8b84f;
+    padding: 15px;
+    margin-top: 25px;
+}
+
+    .guide-box h3 {
+        margin-top: 0;
+        color: #7a5600;
+    }
+
+
+#user-page,
+#admin-page {
+    width: 850px;
+    margin: 35px auto;
+}
+
+    #admin-page h1 {
+        color: #7a5600;
+    }
+
+
+/* 표 */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: white;
+}
+
+th {
+    background-color: #ffe59a;
+}
+
+th,
+td {
+    border: 1px solid #b8a05a;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+/* 작은 화면 */
+
+@media (max-width: 800px) {
+    .login-box {
+        width: 85%;
+    }
+
+    #user-page,
+    #admin-page {
+        width: 90%;
+    }
+
+    .summary-area {
+        display: block;
+    }
+
+    .summary-box {
+        width: 90%;
+        margin-bottom: 12px;
+    }
+}
+
+/* 상품 등록 화면 */
+
+.register-box {
+    width: 500px;
+    background-color: #fff9df;
+    border: 1px solid #d8b84f;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+
+    .register-box p {
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+
+    .register-box input {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #999;
+        border-radius: 4px;
+    }
+
+
+        .register-box input:focus {
+            outline: none;
+            border: 2px solid #d6a600;
+        }
+
+
+@media (max-width: 800px) {
+    .register-box {
+        width: 90%;
+    }
+}
+
+/* 알림 내역 박스 */
+
+.notice-box {
+    background-color: #fff9df;
+    border: 1px solid #d8b84f;
+    border-left: 6px solid #d6a600;
+    border-radius: 5px;
+    padding: 14px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+    .notice-box p {
+        margin: 7px 0;
+    }
+
+.notice-title {
+    font-weight: bold;
+    color: #7a5600;
+    font-size: 16px;
+}
+
+
+/* 상품 상세 화면 */
+
+.detail-box {
+    background-color: #fff9df;
+    border: 1px solid #d8b84f;
+    border-left: 6px solid #d6a600;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+    .detail-box p {
+        margin: 8px 0;
+    }
+
+/* 가격 이력 그래프 */
+
+.chart-box {
+    background-color: #fff9df;
+    border: 1px solid #d8b84f;
+    border-left: 6px solid #d6a600;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+    .chart-box h3 {
+        margin-top: 0;
+        color: #7a5600;
+    }
+
+#price-chart {
+    width: 100%;
+    height: 260px;
+    background-color: white;
+    border: 1px solid #b8a05a;
+}
+
+/* 관리자 로그 화면 */
+
+.admin-menu {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.admin-log-box {
+    background-color: white;
+    border: 2px solid #d8b84f;
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+    .admin-log-box h2 {
+        color: #7a5600;
+        margin-top: 0;
+    }
+
+.log-item {
+    background-color: #fff9df;
+    border: 1px solid #d8b84f;
+    border-left: 6px solid #d6a600;
+    border-radius: 5px;
+    padding: 12px;
+    margin-top: 12px;
+}
+
+    .log-item p {
+        margin: 6px 0;
+    }
+
+
+
+
+/* 관리자 로그 화면 */
+
+.admin-menu {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.admin-section {
+    background-color: white;
+    border: 1px solid #d8b84f;
+    border-radius: 4px;
+    padding: 14px;
+    margin-top: 16px;
+}
+
+    .admin-section h2 {
+        color: #7a5600;
+        margin-top: 0;
+        font-size: 20px;
+    }
+
+    .admin-section table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .admin-section th {
+        background-color: #fff0b3;
+        font-weight: bold;
+    }
+
+    .admin-section th,
+    .admin-section td {
+        border-bottom: 1px solid #ddd;
+        padding: 9px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+        .admin-section td:nth-child(3) {
+            width: 170px;
+            color: #555;
+        }
+
+.admin-empty-message {
+    border: 1px dashed #ccc;
+    padding: 14px;
+    text-align: center;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* 알림 설정 */
+
+.notice-setting-box {
+    background-color: #fff9df;
+    border: 1px solid #d8b84f;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 18px;
+}
+
+    .notice-setting-box h3 {
+        margin-top: 0;
+        color: #7a5600;
+    }
+
+    .notice-setting-box label {
+        margin-right: 15px;
+    }
+
+    .notice-setting-box input[type="email"] {
+        width: 300px;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #999;
+        border-radius: 4px;
+    }
+
+.notice-top-menu {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+
+/* 읽음 / 안 읽음 알림 */
+
+.unread-notice {
+    background-color: #fff3c4;
+}
+
+.read-notice {
+    background-color: #f7f7f7;
+    color: #555;
+}
+
+.read-badge {
+    float: right;
+    border: 1px solid #b8a05a;
+    background-color: white;
+    padding: 3px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+
+/* 관리자 로그 화면 */
+
+.admin-menu {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.admin-section {
+    background-color: white;
+    border: 1px solid #d8b84f;
+    border-radius: 4px;
+    padding: 14px;
+    margin-top: 16px;
+}
+
+    .admin-section h2 {
+        color: #7a5600;
+        margin-top: 0;
+        font-size: 20px;
+    }
+
+    .admin-section table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    .admin-section th {
+        background-color: #fff0b3;
+        font-weight: bold;
+    }
+
+    .admin-section th,
+    .admin-section td {
+        border-bottom: 1px solid #ddd;
+        padding: 9px;
+        text-align: left;
+        font-size: 14px;
+    }
+
+        .admin-section td:nth-child(3) {
+            width: 170px;
+            color: #555;
+        }
+
+.admin-empty-message {
+    border: 1px dashed #ccc;
+    padding: 14px;
+    text-align: center;
+    color: #666;
+    margin-top: 10px;
+}
